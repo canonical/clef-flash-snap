@@ -21,17 +21,12 @@ jobs:
     with:
       build-runner: |
         [
-          "ubuntu-24.04",
-          "ubuntu-24.04-arm"
+          ["amd64", "medium", "noble", "self-hosted"],
+          ["arm64", "medium", "noble", "self-hosted"]
         ]
       store-track: latest
       snap-name: clef-flash
       smoke-test-engine: cpu
-      smoke-test-features: openai_models
-      smoke-test-runner: |
-        [
-          "ubuntu-24.04",
-          "ubuntu-24.04-arm"
-        ]
+      smoke-test-features: openai_models, openai_chat_text
     secrets:
       store-credentials: ${{ secrets.STORE_LOGIN_MAIN }}
