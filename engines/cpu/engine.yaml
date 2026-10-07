@@ -1,0 +1,15 @@
+name: cpu
+summary: CPU inference with llama.cpp
+description: Runs Clef Flash using CPU inference.
+vendor: Canonical Ltd
+devices:
+  anyof:
+    - type: cpu
+runtime: llamacpp
+model:
+  default: clef-flash-q4-k-m-5gb
+  options:
+    - clef-flash-q4-k-m-5gb
+configurations:
+  sleep-idle-seconds: 600
+  min-context-size: 4096

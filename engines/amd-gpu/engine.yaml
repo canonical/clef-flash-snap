@@ -1,0 +1,16 @@
+name: amd-gpu
+summary: AMD GPU inference with llama.cpp
+description: Runs Clef Flash with ROCm acceleration.
+vendor: Canonical Ltd
+devices:
+  anyof:
+    - vendor-id: 0x1002
+      architecture: amd64
+runtime: llamacpp-rocm
+model:
+  default: clef-flash-q4-k-m-5gb
+  options:
+    - clef-flash-q4-k-m-5gb
+configurations:
+  sleep-idle-seconds: 600
+  min-context-size: 4096

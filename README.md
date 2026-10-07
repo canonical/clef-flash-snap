@@ -4,17 +4,17 @@
 #
 
 # Snap name. This is exposed as a command when installing the snap.
-snap-name: gemma4
+snap-name: clef-flash
 # Snap title, a friendly name for the snap, used in snap metadata and docs.
-snap-title: Gemma 4
+snap-title: Clef Flash
 # URL to model card from the model publisher
-model-card: https://ai.google.dev/gemma/docs/core/model_card_4
+model-card: https://huggingface.co/Cloudflare/clef-flash
 # The port that the inference snap will use for its API server.
-http-port: 8080
+http-port: 8366
 # The port that the inference snap will use for its webui server.
-webui-http-port: 8081
+webui-http-port: 8367
 # Optimizations
-engines: cpu, nvidia-gpu
+engines: cpu, nvidia-gpu, amd-gpu
 ---
 
 > [!NOTE]

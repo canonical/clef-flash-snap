@@ -19,6 +19,7 @@ jobs:
   build-test:
     # The applied label is used to select build/test tasks and as job's display name.
     name: ${{ github.event.label.name }}
+    if: github.event.label.name == vars.PR_BUILD_TRIGGER_LABEL || github.event.label.name == vars.PR_TEST_TRIGGER_LABEL
     uses: canonical/inference-snaps-dev/.github/workflows/reuse-pr-build-test.yaml@v2
     with:
       trigger-label: ${{ github.event.label.name }}
@@ -28,26 +29,33 @@ jobs:
           "ubuntu-24.04",
           "ubuntu-24.04-arm"
         ]
-      # TODO: Adjust the test matrix to match the target hardware/engines.
       test-jobs-matrix: |
         [
           {
             "job-queue": "maas-systemtests-amd64",
             "provision-data": "distro: noble",
             "select-engine": "cpu",
-            "test-chat-tps": true
+            "test-chat-tps": false,
+            "test-image-prompt": false
           },
           {
             "job-queue": "anbox-nvidia-amd64",
             "provision-data": "distro: noble",
             "install-nvidia-driver-version": 595,
             "select-engine": "nvidia-gpu",
-            "test-chat-tps": true,
-            "expected-tps": 9.4
+            "test-chat-tps": false,
+            "test-image-prompt": false
+          },
+          {
+            "job-queue": "202203-30094",
+            "provision-data": "distro: noble",
+            "snap-connections": "process-control",
+            "select-engine": "amd-gpu",
+            "test-chat-tps": false,
+            "test-image-prompt": false
           }
         ]
-      # TODO: Replace with the snap name.
-      snap-name: <snap-name>
+      snap-name: clef-flash
       testflinger-client-id: ${{ vars.TESTFLINGER_CLIENT_ID }}
     secrets:
       store-credentials: ${{ secrets.STORE_LOGIN_PR }}

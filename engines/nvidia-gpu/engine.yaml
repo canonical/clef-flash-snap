@@ -1,0 +1,15 @@
+name: nvidia-gpu
+summary: NVIDIA GPU inference with llama.cpp
+description: Runs Clef Flash with CUDA acceleration.
+vendor: Canonical Ltd
+devices:
+  anyof:
+    - vendor-id: 0x10de
+runtime: llamacpp-cuda
+model:
+  default: clef-flash-q4-k-m-5gb
+  options:
+    - clef-flash-q4-k-m-5gb
+configurations:
+  sleep-idle-seconds: 600
+  min-context-size: 4096
