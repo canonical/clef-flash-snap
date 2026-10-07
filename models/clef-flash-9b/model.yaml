@@ -8,7 +8,6 @@ quantization: Q4_K_M
 disk-size: 6782M
 
 capabilities:
-  - text
   - vision
   - decision
   

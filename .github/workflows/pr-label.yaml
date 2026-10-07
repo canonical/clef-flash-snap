@@ -33,17 +33,13 @@ jobs:
           {
             "job-queue": "maas-systemtests-amd64",
             "provision-data": "distro: noble",
-            "select-engine": "cpu",
-            "test-chat-tps": true,
-            "test-image-prompt": true
+            "select-engine": "cpu"
           },
           {
             "job-queue": "anbox-nvidia-amd64",
             "provision-data": "distro: noble",
             "install-nvidia-driver-version": 595,
-            "select-engine": "nvidia-gpu",
-            "test-chat-tps": true,
-            "test-image-prompt": true
+            "select-engine": "nvidia-gpu"
           }
         ]
       snap-name: clef-flash
