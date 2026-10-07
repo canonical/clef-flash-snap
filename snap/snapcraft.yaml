@@ -111,12 +111,6 @@ parts:
     stage-packages:
       - pciutils
 
-  webui:
-    plugin: dump
-    source: https://github.com/canonical/inference-snaps-webui/releases/download/v1.1.0/inference-snaps-webui.tar.xz
-    organize:
-      "*": webui/
-
   engines:
     source: engines
     plugin: dump
@@ -250,8 +244,6 @@ apps:
       - opengl
       - network
       - desktop
-    environment:
-      ADDITIONAL_FEATURES: chat, webui
 
   server:
     command: bin/server.sh
@@ -262,12 +254,6 @@ apps:
       - process-control
       - opengl
       - home
-
-  server-webui:
-    command: bin/server-webui.sh
-    daemon: simple
-    plugs:
-      - network-bind
 
 lint:
   ignore:
