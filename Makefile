@@ -59,7 +59,7 @@ init-submodules:
 download-models: download-model-flash-Q4_K_M
 
 download-model-flash-Q4_K_M:
-	$(hf) download inference-snaps/clef-flash-Q4_K_M-5GB \
+	$(hf) download inference-snaps/clef-flash-Q4_K_M-4GB \
 		--local-dir model-weights/model-q4-k-m/
 	$(hf) download ggml-org/Clef-Flash-GGUF mmproj-Clef-Flash-Q8_0.gguf \
 		--local-dir model-weights/mmproj-q4-k-m/
