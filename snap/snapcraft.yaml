@@ -96,8 +96,8 @@ parts:
 
   cli:
     source:
-      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v2.0.0-beta.14/inference-snaps-cli-linux-amd64.tar.xz
-      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v2.0.0-beta.14/inference-snaps-cli-linux-arm64.tar.xz
+      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v2.0.0-beta.16/inference-snaps-cli-linux-amd64.tar.xz
+      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v2.0.0-beta.16/inference-snaps-cli-linux-arm64.tar.xz
     plugin: dump
     override-build: |
       mkdir -p bin
@@ -148,9 +148,9 @@ parts:
     override-build: |
       cp -rf --archive --link --no-dereference ${CRAFT_PART_SRC}/* ${CRAFT_PART_INSTALL}
     organize:
-      "model-Q4_K_M-5GB/Clef-Flash-Q4_K_M-00001-of-00002.gguf": (component/model-clef-flash-1-of-2)
-      "model-Q4_K_M-5GB/Clef-Flash-Q4_K_M-00002-of-00002.gguf": (component/model-clef-flash-2-of-2)
-      "mmproj-Q4_K_M-5GB/mmproj-Clef-Flash-Q8_0.gguf": (component/mmproj-clef-flash)
+      "model-q4-k-m/Clef-Flash-Q4_K_M-00001-of-00002.gguf": (component/model-clef-flash-1-of-2)
+      "model-q4-k-m/Clef-Flash-Q4_K_M-00002-of-00002.gguf": (component/model-clef-flash-2-of-2)
+      "mmproj-q4-k-m/mmproj-Clef-Flash-Q8_0.gguf": (component/mmproj-clef-flash)
     prime:
       - -*
 

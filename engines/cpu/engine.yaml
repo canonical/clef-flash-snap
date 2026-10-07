@@ -7,9 +7,9 @@ devices:
     - type: cpu
 runtime: llamacpp
 model:
-  default: clef-flash-q4-k-m-5gb
+  default: clef-flash-9b
   options:
-    - clef-flash-q4-k-m-5gb
+    - clef-flash-9b
 configurations:
   sleep-idle-seconds: 600
   min-context-size: 4096
