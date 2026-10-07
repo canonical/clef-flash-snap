@@ -1,8 +1,7 @@
-Clef Flash model weights are provided by Cloudflare and are licensed under the
-Apache License 2.0. The model card is available at
-https://huggingface.co/Cloudflare/clef-flash.
+Clef Flash is provided under and subject to the Apache License, Version 2.0
 
-The model is a Q4_K_M GGUF conversion distributed by inference-snaps at
-https://huggingface.co/inference-snaps/clef-flash-Q4_K_M-5GB, with a Q8_0
-multimodal projector from ggml-org at
-https://huggingface.co/ggml-org/Clef-Flash-GGUF.
+A copy of the Apache License, Version 2.0 is included herein and can be found in the LICENSE-clef-flash file.
+
+The snap packaging code is licensed separately under the terms specified in the LICENSE file.
+
+All artifacts and dependencies included within this snap package are subject to their respective licenses, which are documented and available at /snap/<snap-name>/current/usr/share/doc within the installed snap package.
