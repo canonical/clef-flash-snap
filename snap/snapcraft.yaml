@@ -146,7 +146,7 @@ parts:
     organize:
       "model-q4-k-m/Clef-Flash-Q4_K_M-00001-of-00002.gguf": (component/model-clef-flash-1-of-2)
       "model-q4-k-m/Clef-Flash-Q4_K_M-00002-of-00002.gguf": (component/model-clef-flash-2-of-2)
-      "mmproj-q4-k-m/mmproj-Clef-Flash-Q8_0.gguf": (component/mmproj-clef-flash)
+      "mmproj-q8-0/mmproj-Clef-Flash-Q8_0.gguf": (component/mmproj-clef-flash)
     prime:
       - -*
 
