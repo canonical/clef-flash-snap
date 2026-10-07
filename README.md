@@ -1,64 +1,26 @@
----
-#
-# This YAML frontmatter is read by an AI agent during snap creation and then removed from the README.
-#
+# Clef Flash inference snap
+[![clef-flash](https://snapcraft.io/clef-flash/badge.svg)](https://snapcraft.io/clef-flash)
 
-# Snap name. This is exposed as a command when installing the snap.
-snap-name: clef-flash
-# Snap title, a friendly name for the snap, used in snap metadata and docs.
-snap-title: Clef Flash
-# URL to model card from the model publisher
-model-card: https://huggingface.co/Cloudflare/clef-flash
-# The port that the inference snap will use for its API server.
-http-port: 8366
-# The port that the inference snap will use for its webui server.
-webui-http-port: 8367
-# Optimizations
-engines: cpu, nvidia-gpu, amd-gpu
----
+Clef-Flash is a 9B multimodal decision model that turns text, JSON, images, or video into typed decisions and probabilities.
 
-> [!NOTE]
-> This README is a template that is be read and completed by an AI agent to create an inference snap.
-> 
-> Complete the [Makefile](./Makefile) and the above YAML frontmatter. Leave everything else to the AI agent.
-> Fields wrapped in `{...}` will be replaced with concrete values by the AI agent. This note and the YAML frontmatter will be deleted.
->
-> Launch a [Workshop](https://ubuntu.com/workshop) environment with everything you need to create the snap:
-> ```shell
-> workshop launch
-> workshop shell
-> opencode
-> ```
-> Choose the preferred LLM in OpenCode and prompt `start packing pipeline` to start the snap creation process.
-> The snap will be developed, built and tested automatically in the workshop environment.
-> 
-> If this is the first time doing this, refer to [Using an AI agent to create an inference snap](https://documentation.ubuntu.com/inference-snaps/tutorial/agentic-inference-snap-creation/) tutorial.
-
-# {snap-title} inference snap
-[![{snap-name}](https://snapcraft.io/{snap-name}/badge.svg)](https://snapcraft.io/{snap-name})
-
-
-
-{model description}
-
-Use this snap to quickly install an optimized environment for local inference with {snap-title}.
+Use this snap to quickly install an optimized environment for local inference with Clef Flash.
 
 The snap includes the following hardware-optimized inference engines:
 
-* cpu: Optimized for x64 and ARM (armv8, armv9) CPUs
+* cpu: Optimized for x64 and ARM CPUs
 * nvidia-gpu: CUDA-enabled GPU acceleration
-* {engine}: {description}
+* amd-gpu: ROCm-enabled GPU acceleration
 
 The most suitable engine is automatically selected based on the available hardware.
 
 #### Install
 ```
-sudo snap install {snap-name}
+sudo snap install clef-flash
 ```
 
 #### Run
 ```
-{snap-name}
+clef-flash
 ```
 
 > [!TIP]
@@ -76,8 +38,8 @@ sudo snap install {snap-name}
 
 Clone the repo:
 ```shell
-git clone https://github.com/{owner}/{repository}
-cd {repository}
+git clone https://github.com/canonical/clef-flash-snap.git
+cd clef-flash-snap
 ```
 
 Initialize the development environment:
