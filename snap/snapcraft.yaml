@@ -259,6 +259,7 @@ apps:
     plugs:
       - network-bind
       - hardware-observe
+      - process-control
       - opengl
       - home
 
