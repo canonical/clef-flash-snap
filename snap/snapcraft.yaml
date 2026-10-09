@@ -187,11 +187,11 @@ parts:
       fi
     override-build: |
       if [[ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]]; then
-        craftctl default
-        
         # Move license files to be included in the snap, not the component
         mkdir -p $CRAFT_PRIME/usr/share/doc/
         mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp-rocm
+        
+        craftctl default
       fi
     override-stage: *amd64-only
     override-prime: *amd64-only
