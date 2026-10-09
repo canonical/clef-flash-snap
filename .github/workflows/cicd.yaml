@@ -27,6 +27,6 @@ jobs:
       store-track: latest
       snap-name: clef-flash
       smoke-test-engine: cpu
-      smoke-test-features: openai_models
+      smoke-test-features: openai_models, systemone_decision
     secrets:
       store-credentials: ${{ secrets.STORE_LOGIN_MAIN }}
