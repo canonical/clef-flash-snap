@@ -138,7 +138,7 @@ parts:
       "server.sh": bin/
       "server-webui.sh": bin/
 
-  local-component-files:
+  model-weights:
     plugin: cmake
     source: model-weights
     override-build: |
