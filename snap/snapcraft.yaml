@@ -88,8 +88,7 @@ parts:
       - jq
       - git
     override-pull: |
-      # Nothing to download for this metadata-only part.
-      true
+      # Do nothing. This significantly reduces build time when sourcing large files.
     override-build: |
       set -eo pipefail
       cli_version=$($CRAFT_STAGE/bin/modelctl version --format=json | jq -r .cli)
