@@ -1,7 +1,7 @@
 name: clef-flash-9b
 
 description: Cloudflare's Clef-Flash 9B multimodal decision model in Q4_K_M GGUF format.
-model-card-url: https://huggingface.co/Cloudflare/clef-flash
+model-card-url: https://huggingface.co/inference-snaps/clef-flash-Q4_K_M-4GB
 format: GGUF
 quantization: Q4_K_M
 
