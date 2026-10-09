@@ -5,7 +5,6 @@ host="$(modelctl get http.host)"
 sleep_idle_seconds="$(modelctl get sleep-idle-seconds)"
 min_context_size="$(modelctl get min-context-size)"
 model_name="$(modelctl model --format=json | jq -r '.name')"
-test -n "$model_name" && test "$model_name" != null
 
 extra_args=()
 verbose="$(modelctl get verbose)"
