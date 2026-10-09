@@ -1,0 +1,12 @@
+#!/bin/bash -eu
+
+tag="snap.$SNAP_INSTANCE_NAME.hook.install"
+
+exec 1> >(tee >(logger --tag="$tag"))
+exec 2> >(logger --stderr --priority error --tag="$tag")
+
+modelctl set --package http.port="8366"
+modelctl set --package http.host="127.0.0.1"
+modelctl set --package verbose="false"
+
+modelctl use-engine --auto --components --assume-yes --fallback=cpu

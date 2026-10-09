@@ -7,6 +7,7 @@ stage/
 .workshop.lock
 .craft/
 .snapd-relocate/
+components/
 
 # Model weight files
 model-weights/
