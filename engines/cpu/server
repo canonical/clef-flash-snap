@@ -12,6 +12,12 @@ if [ "$verbose" = "true" ]; then
   extra_args+=(--verbose)
 fi
 
+# As of llama.cpp version b11408, the arm64 CPU backend does 
+# not support the repacked Clef-Flash model.
+case "$(uname -m)" in
+  aarch64|arm64) extra_args+=(--no-repack) ;;
+esac
+
 mmproj_args=()
 if [ -n "${MMPROJ_FILE:-}" ]; then
   mmproj_args=(--mmproj "$MMPROJ_FILE")
