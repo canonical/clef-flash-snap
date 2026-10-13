@@ -1,0 +1,277 @@
+name: clef-flash
+title: Clef Flash
+summary: Local AI with Clef Flash inference snap
+description: |
+  Clef-Flash is a multimodal decision model that turns text, JSON, images,
+  or video into typed decisions and probabilities.
+
+  Use this snap to quickly install an optimized environment for local inference
+  with Clef Flash.
+
+  The snap includes the following hardware-optimized inference engines:
+
+  * cpu: Optimized for x64 and ARM CPUs
+  * nvidia-gpu: CUDA-enabled GPU acceleration
+  * amd-gpu: ROCm-enabled GPU acceleration
+
+  The most suitable engine is automatically selected based on the available hardware.
+
+  **Install:**
+
+  `sudo snap install clef-flash`
+
+  **Run:**
+
+  `clef-flash`
+
+  Some accelerators require extra drivers to be usable with this snap:
+  https://documentation.ubuntu.com/inference-snaps/how-to/setup/drivers/
+
+  **License:**
+
+  The Clef Flash model is provided by Cloudflare under the Apache-2.0 license:
+  https://www.apache.org/licenses/LICENSE-2.0
+
+  The licenses of all the bundled software can be found after installing the snap at
+  `/snap/clef-flash/current/usr/share/doc`.
+
+icon: snap/gui/icon-256.png
+website: https://documentation.ubuntu.com/inference-snaps
+source-code: https://github.com/canonical/clef-flash-snap
+issues: https://github.com/canonical/inference-snaps/issues
+
+adopt-info: version
+
+base: core24
+grade: stable
+confinement: strict
+compression: lzo
+
+assumes:
+  - snapd2.68
+
+platforms:
+  amd64:
+  arm64:
+
+environment:
+  SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
+  ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
+
+plugs:
+  # To allow sideloading models by root.
+  home:
+    read: all
+
+slots:
+  provider:
+    interface: content
+    content: inference-provider
+    source:
+      read:
+        - $SNAP_COMMON/share/provider
+
+hooks:
+  install:
+    plugs: &install-plugs
+      - hardware-observe
+      - opengl
+  post-refresh:
+    plugs: *install-plugs
+
+parts:
+  version:
+    after: [cli]
+    plugin: nil
+    source: .
+    build-packages:
+      - jq
+      - git
+    override-pull: |
+      # Do nothing. This significantly reduces build time when sourcing large files.
+    override-build: |
+      set -eo pipefail
+      cli_version=$($CRAFT_STAGE/bin/modelctl version --format=json | jq -r .cli)
+      git_hash=$(git -C "$SNAPCRAFT_PROJECT_DIR" describe --always)
+      craftctl set version="${cli_version#v}+${git_hash}"
+
+  cli:
+    source:
+      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v2.0.0-beta.16/inference-snaps-cli-linux-amd64.tar.xz
+      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v2.0.0-beta.16/inference-snaps-cli-linux-arm64.tar.xz
+    plugin: dump
+    override-build: |
+      mkdir -p bin
+      ln -s modelctl bin/clef-flash
+      craftctl default
+
+  cli-dependencies:
+    plugin: nil
+    stage-packages:
+      - pciutils # lspci
+
+  # Used for NVIDIA vRAM and CUDA Capability detection.
+  # Only the binary is included to avoid staging libraries, which should instead be provided by the host through the opengl interface.
+  cli-nvidia-smi:
+    plugin: nil
+    build-packages:
+      - nvidia-utils-580
+    override-build: |
+      mkdir -p $CRAFT_PART_INSTALL/usr/bin
+      cp /usr/bin/nvidia-smi $CRAFT_PART_INSTALL/usr/bin/
+      
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/nvidia-utils-580/
+      mkdir -p $license_dir
+      cp /usr/share/doc/nvidia-utils-580/copyright $license_dir/
+
+  engines:
+    source: engines
+    plugin: dump
+    organize:
+      "*": engines/
+
+  models:
+    source: models
+    plugin: dump
+    organize:
+      "*": models/
+
+  runtimes:
+    source: runtimes
+    plugin: dump
+    organize:
+      "*": runtimes/
+
+  scripts:
+    source: scripts
+    plugin: dump
+    stage-packages:
+      - jq
+    organize:
+      "server.sh": bin/
+      "server-webui.sh": bin/
+
+  model-weights:
+    plugin: cmake
+    source: model-weights
+    override-build: |
+      cp -rf --archive --link --no-dereference ${CRAFT_PART_SRC}/* ${CRAFT_PART_INSTALL}
+    organize:
+      "model-q4-k-m/Clef-Flash-Q4_K_M-00001-of-00002.gguf": (component/model-clef-flash-1-of-2)
+      "model-q4-k-m/Clef-Flash-Q4_K_M-00002-of-00002.gguf": (component/model-clef-flash-2-of-2)
+      "mmproj-q8-0/mmproj-Clef-Flash-Q8_0.gguf": (component/mmproj-clef-flash)
+    prime:
+      - -*
+
+  llamacpp:
+    plugin: dump
+    source:
+      - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b11408/llamacpp-amd64.tar.gz
+      - on arm64: https://github.com/canonical/llama.cpp-builds/releases/download/b11408/llamacpp-arm64.tar.gz
+    override-build: |
+      mkdir -p "$CRAFT_PRIME/usr/share/doc"
+      mv licenses "$CRAFT_PRIME/usr/share/doc/llama.cpp"
+      craftctl default
+    stage-packages:
+      - libgomp1
+    organize:
+      "*": (component/llamacpp)
+
+  llamacpp-cuda:
+    plugin: dump
+    source:
+      - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b11408/llamacpp-amd64+cuda12.9.tar.gz
+      - on arm64: https://github.com/canonical/llama.cpp-builds/releases/download/b11408/llamacpp-arm64+cuda12.9.tar.gz
+    override-build: |
+      mkdir -p "$CRAFT_PRIME/usr/share/doc"
+      mv licenses "$CRAFT_PRIME/usr/share/doc/llama.cpp-cuda"
+      craftctl default
+    stage-packages:
+      - libgomp1
+    organize:
+      "*": (component/llamacpp-cuda)
+
+  llamacpp-rocm:
+    plugin: dump
+    source: https://github.com/canonical/llama.cpp-builds/releases/download/b11408/llamacpp-amd64+rocm.tar.gz
+    override-pull: &amd64-only |
+      if [[ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]]; then
+        craftctl default
+      fi
+    override-build: |
+      if [[ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]]; then
+        # Move license files to be included in the snap, not the component
+        mkdir -p $CRAFT_PRIME/usr/share/doc/
+        mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp-rocm
+        
+        craftctl default
+      fi
+    override-stage: *amd64-only
+    override-prime: *amd64-only
+    stage-packages:
+      - libgomp1
+      - libatomic1
+    organize:
+      # move everything, including the staged packages
+      "*": (component/llamacpp-rocm)
+
+  notice:
+    plugin: nil
+    source: NOTICE
+    source-type: file
+    override-build: |
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc
+      mkdir -p "$license_dir"
+      cp NOTICE "$license_dir/"
+      cp "$SNAPCRAFT_PROJECT_DIR/LICENSE" "$license_dir/"
+      cp "$SNAPCRAFT_PROJECT_DIR/LICENSE-clef-flash" "$license_dir/"
+
+components:
+  model-clef-flash-1-of-2: &model-part
+    type: standard
+    summary: Cloudflare Clef Flash Q4_K_M model
+    description: Model weights for Cloudflare Clef Flash Q4_K_M in GGUF format.
+  model-clef-flash-2-of-2:
+    <<: *model-part
+  mmproj-clef-flash:
+    type: standard
+    summary: Cloudflare Clef Flash multimodal projector
+    description: Multimodal projector weights for Cloudflare Clef Flash.
+  llamacpp:
+    type: standard
+    summary: llama.cpp using default CPU instruction sets
+    description: LLM inference in C/C++
+  llamacpp-cuda:
+    type: standard
+    summary: llama.cpp with CUDA backend
+    description: LLM inference in C/C++.
+  llamacpp-rocm:
+    type: standard
+    summary: llama.cpp with ROCm backend
+    description: LLM inference in C/C++.
+
+apps:
+  clef-flash:
+    command: bin/clef-flash
+    completer: bin/snap-completer.bash
+    plugs:
+      - hardware-observe
+      - opengl
+      - network
+      - desktop
+
+  server:
+    command: bin/server.sh
+    daemon: simple
+    plugs:
+      - network-bind
+      - hardware-observe
+      - process-control
+      - opengl
+      - home
+
+lint:
+  ignore:
+    - metadata:
+      - license
+      - contact

@@ -1,0 +1,16 @@
+# Triage failures in completed workflow runs.
+name: Triage Failures
+
+on:
+  workflow_run:
+    workflows: ['**']
+    types: [completed]
+
+permissions:
+  actions: write
+
+jobs:
+  triage:
+    uses: canonical/inference-snaps-dev/.github/workflows/reuse-triage-failures.yaml@v2
+    with:
+      workflow-run: "${{ toJson(github.event.workflow_run) }}"
