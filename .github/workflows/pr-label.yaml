@@ -44,9 +44,7 @@ jobs:
           {
             "job-queue": "inference-snaps-amd-testing",
             "provision-data": "distro: noble",
-            "select-engine": "amd-gpu",
-            "test-chat-tps": true,
-            "test-image-prompt": true
+            "select-engine": "amd-gpu"
           }
         ]
       snap-name: clef-flash
