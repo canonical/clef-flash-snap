@@ -40,6 +40,11 @@ jobs:
             "provision-data": "distro: noble",
             "install-nvidia-driver-version": 595,
             "select-engine": "nvidia-gpu"
+          },
+          {
+            "job-queue": "inference-snaps-amd-testing",
+            "provision-data": "distro: noble",
+            "select-engine": "amd-gpu"
           }
         ]
       snap-name: clef-flash
